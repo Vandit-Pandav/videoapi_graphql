@@ -5,18 +5,16 @@ const typeDefs = require("./typedefs");
 const resolvers = require("./resolvers");
 const port = process.env.PORT || 4000;
 
-async function startApolloServer() {
-  const server = new ApolloServer({ typeDefs, resolvers });
-  await server.start();
-
-  const app = express();
+const server = new ApolloServer({ typeDefs, resolvers });
+const app = express();
+server.start().then(() => {
   server.applyMiddleware({ app });
-  await mongoose.connect("mongodb://localhost:27017/shortvideo");
-  console.log("conection successful....");
-  app.listen(port, () => {
-    console.log(` Server ready at http://localhost:4000${server.graphqlPath}`);
-  });
-  return { server, app };
-}
+});
 
-startApolloServer();
+mongoose.connect("mongodb://localhost:27017/shortvideo").then(() => {
+  console.log("conection successful....");
+});
+app.listen(port, () => {
+  console.log(` Server ready at http://localhost:4000${server.graphqlPath}`);
+});
+return { server, app };
