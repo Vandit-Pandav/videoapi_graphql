@@ -11,7 +11,10 @@ server.start().then(() => {
   server.applyMiddleware({ app });
 });
 
-mongoose.connect("mongodb://localhost:27017/shortvideo").then(() => {
+const dbConn =
+  "mongodb+srv://shubhamkanani:ShubhamKanani@shubham.3msms.mongodb.net/one_more_shorts?retryWrites=true&w=majority";
+
+mongoose.connect(dbConn).then(() => {
   console.log("conection successful....");
 });
 app.listen(port, () => {
